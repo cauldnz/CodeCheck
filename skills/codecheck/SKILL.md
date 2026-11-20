@@ -176,6 +176,28 @@ alone, so a brief never carries a finding's scores, severity or proof of
 concept, which agent or family reported it, another reviewer's verdict or the
 orchestrator's own view.
 
+If the request asks for model diversity, and the client supports selecting a
+model per sub-agent, assign at least two reviewers of the same batch to
+different available models. Treat this as additional adversarial independence,
+not a vote. Give every reviewer the same candidate brief and require source
+evidence for either confirmation or refutation. If their evidence diverges,
+brief a focused follow-up on the disputed fact when the existing disagreement
+rule requires one. Do not select a model based on the finding's expected
+outcome, do not retry only because a model disagrees, and do not treat identical
+assumptions as independent evidence merely because the models differ. If the
+client cannot provide two models and two reviewers, use its available panel and
+record the reduced diversity under `## Limitations`.
+
+When the client exposes model identity, record the model used by the hunter that
+proposed each finding and keep that identity out of the independent reviewer's
+brief. Assign reviewers from a different exact model and, where possible, a
+different provider or model family than the proposer. A reviewer from the same
+exact model is a diversity warning; a reviewer from another model in the same
+provider or family is a reduced-diversity warning. Continue when no alternative
+is available, but state the warning and the identity evidence under
+`## Limitations`. If the client does not expose model identity, state that
+model-family independence could not be verified.
+
 Then decide each finding. Weigh the reviewers' evidence, not their number:
 reviewers who make the same assumption do not prove it by agreeing. For each
 finding, separate the evidence its outcome rests on from its assumptions, as

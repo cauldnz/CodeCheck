@@ -134,24 +134,24 @@ Your request sets the scope of the review:
 
 ## Multi-model review panels in GitHub Copilot
 
-GitHub Copilot can use multiple available frontier models for one CodeCheck run.
-This is especially useful in CodeCheck's adversarial review stage: independent
-reviewers receive the same candidate and source context, but may use different
-models to challenge the finding from different failure modes. Ask for a diverse
-panel explicitly:
+When a GitHub Copilot client supports selecting a model per sub-agent, it can
+use multiple available frontier models for CodeCheck's adversarial review. Give
+independent reviewers the same candidate and source context, then use different
+models to challenge it from different failure modes. Ask for a diverse panel
+explicitly:
 
 ```text
 Run a CodeCheck review of ./src with a diverse two-model independent review panel.
 ```
 
-When the client supports choosing a model per sub-agent, CodeCheck can assign
-different available models to independent hunters or reviewers while retaining
-the same prompts, evidence rules, CVSS metrics, and final report. Models are
-assigned for adversarial independence, not for voting: the orchestrator still
-weighs source evidence, shared assumptions, and concrete guards. A disagreement
-can trigger a narrowly focused follow-up review rather than a majority-rule
-decision. If several models are unavailable, CodeCheck uses the available models
-and records the reduced diversity under limitations.
+For an explicit diversity request, CodeCheck assigns at least two independent
+reviewers to different available models while retaining the same prompts,
+evidence rules, CVSS metrics, and final report. Models are assigned for
+adversarial independence, not for voting: the orchestrator still weighs source
+evidence, shared assumptions, and concrete guards. A disagreement can trigger a
+narrowly focused follow-up review rather than a majority-rule decision. If the
+client cannot supply two models and two reviewers, CodeCheck continues with the
+available panel and records the reduced diversity under limitations.
 
 ## Output
 
@@ -390,5 +390,5 @@ Run `npm install` once to install the dependencies. Then use these commands:
 
 The lint check covers formatting only. No automated test covers the skill end to
 end, so run a changed skill against a small codebase with known vulnerabilities
-before you rely on it. Keep `version` identical in `.claude-plugin/plugin.json`
-and `.codex-plugin/plugin.json`.
+before you rely on it. Keep `version` identical in `plugin.json`,
+`.claude-plugin/plugin.json`, and `.codex-plugin/plugin.json`.

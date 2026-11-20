@@ -17,18 +17,5 @@
     "static-analysis",
     "github-copilot",
     "vscode"
-  ],
-  "interface": {
-    "displayName": "CodeCheck",
-    "shortDescription": "Evidence-backed static security reviews with independent finding verification.",
-    "developerName": "Commonwealth Bank of Australia (CBA)",
-    "category": "Secure Development, Vulnerability Discovery, and Security Research",
-    "capabilities": ["Read"],
-    "brandColor": "#FFCC00",
-    "defaultPrompt": [
-      "Run a CodeCheck security review of this repository.",
-      "Run a read-only CodeCheck review of ./src.",
-      "Run a CodeCheck review with a diverse independent review panel."
-    ]
-  }
+  ]
 }

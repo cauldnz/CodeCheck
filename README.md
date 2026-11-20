@@ -75,6 +75,10 @@ Before you run CodeCheck:
 
 This repository is an Agent Plugin and a plugin marketplace named
 `cba-codecheck`. Install it using the native mechanism for your coding agent.
+The portable package uses the Agent Plugins 1.0 root `plugin.json` and the
+`skills/` discovery convention. The existing `.claude-plugin/`,
+`.codex-plugin/`, and `.agents/plugins/` files remain client-specific
+marketplace metadata; they do not replace or override the portable manifest.
 
 Claude Code:
 
@@ -147,11 +151,15 @@ Run a CodeCheck review of ./src with a diverse two-model independent review pane
 For an explicit diversity request, CodeCheck assigns at least two independent
 reviewers to different available models while retaining the same prompts,
 evidence rules, CVSS metrics, and final report. Models are assigned for
-adversarial independence, not for voting: the orchestrator still weighs source
-evidence, shared assumptions, and concrete guards. A disagreement can trigger a
-narrowly focused follow-up review rather than a majority-rule decision. If the
-client cannot supply two models and two reviewers, CodeCheck continues with the
-available panel and records the reduced diversity under limitations.
+adversarial independence, not for voting. Where the client exposes model
+identity, reviewers should differ from the proposing hunter's exact model and,
+where possible, from its provider/model family. A same-family fallback is
+reported under limitations rather than presented as full diversity. The
+orchestrator still weighs source evidence, shared assumptions, and concrete
+guards; disagreement can trigger a narrowly focused follow-up review rather than
+a majority-rule decision. If the client cannot supply two models and two
+reviewers, or cannot expose model identity, CodeCheck continues with the
+available panel and records the limitation.
 
 ## Output
 

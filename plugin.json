@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "codecheck",
+  "version": "0.0.1",
+  "description": "CWE-targeted static application security testing with read-only hunts and evidence-backed findings.",
+  "author": {
+    "name": "Commonwealth Bank of Australia (CBA)"
+  },
+  "homepage": "https://github.com/Commonwealth-Bank-of-Australia/CodeCheck",
+  "repository": "https://github.com/Commonwealth-Bank-of-Australia/CodeCheck",
+  "license": "MIT",
+  "keywords": [
+    "cyber",
+    "security",
+    "sast",
+    "cwe",
+    "static-analysis",
+    "github-copilot",
+    "vscode"
+  ],
+  "interface": {
+    "displayName": "CodeCheck",
+    "shortDescription": "Evidence-backed static security reviews with independent finding verification.",
+    "developerName": "Commonwealth Bank of Australia (CBA)",
+    "category": "Secure Development, Vulnerability Discovery, and Security Research",
+    "capabilities": ["Read"],
+    "brandColor": "#FFCC00",
+    "defaultPrompt": [
+      "Run a CodeCheck security review of this repository.",
+      "Run a read-only CodeCheck review of ./src.",
+      "Run a CodeCheck review with a diverse independent review panel."
+    ]
+  }
+}

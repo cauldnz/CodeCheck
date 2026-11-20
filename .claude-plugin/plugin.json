@@ -2,7 +2,7 @@
   "name": "codecheck",
   "displayName": "CodeCheck",
   "version": "0.0.1",
-  "description": "CWE-targeted static application security testing harness with read-only CWE hunts and evidence-backed findings; Supports Claude Code and Codex",
+  "description": "CWE-targeted static application security testing harness with read-only CWE hunts and evidence-backed findings; supports Claude Code, Codex, VS Code, and GitHub Copilot",
   "author": {
     "name": "Commonwealth Bank of Australia (CBA)"
   },

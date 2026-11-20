@@ -176,6 +176,19 @@ alone, so a brief never carries a finding's scores, severity or proof of
 concept, which agent or family reported it, another reviewer's verdict or the
 orchestrator's own view.
 
+If the request asks for model diversity, and the client supports selecting a
+model per sub-agent, assign reviewers of the same batch to different available
+models. Apply the same rule to independent hunters when the request asks for a
+diverse discovery panel. Treat this as additional adversarial independence, not
+a vote. Give every reviewer the same candidate brief and require source evidence
+for either confirmation or refutation. If their evidence diverges, brief a
+focused follow-up on the disputed fact when the existing disagreement rule
+requires one. Do not select a model based on the finding's expected outcome, do
+not retry only because a model disagrees, and do not treat identical assumptions
+as independent evidence merely because the models differ. If the client cannot
+provide the requested diversity, use its available sub-agents and record the
+reduced diversity under `## Limitations`.
+
 Then decide each finding. Weigh the reviewers' evidence, not their number:
 reviewers who make the same assumption do not prove it by agreeing. For each
 finding, separate the evidence its outcome rests on from its assumptions, as

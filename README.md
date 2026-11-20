@@ -28,12 +28,13 @@
 >   applicable licence. To the maximum extent permitted by law, CBA excludes
 >   liability arising from or in connection with CodeCheck or its use.
 
-CodeCheck is a Claude Code and Codex plugin that runs an LLM (AI) powered static
-security review of source code. Use it to find candidate vulnerabilities in
-open-source software or code you own. You can give it a source tree, branch,
-commit or pull request, and it returns you suspected findings inside your coding
-agent. Each finding includes the data flow from source to sink, the verdict of
-an independent reviewer sub-agent and a CVSS 4.0 vector.
+CodeCheck is a coding-agent plugin for Claude Code, Codex, VS Code, and GitHub
+Copilot. It runs an LLM (AI) powered static security review of source code. Use
+it to find candidate vulnerabilities in open-source software or code you own.
+You can give it a source tree, branch, commit or pull request, and it returns
+you suspected findings inside your coding agent. Each finding includes the data
+flow from source to sink, the verdict of an independent reviewer sub-agent and a
+CVSS 4.0 vector.
 
 To ensure CBA can consistently benchmark new AI powered security capabilities an
 internal vulnerability evaluation framework was developed. Over the past 6
@@ -44,8 +45,9 @@ vulnerabilities in a single run.
 
 ## Prerequisites
 
-- Claude Code or Codex.
-- A local clone of this repository, or of your fork.
+- Claude Code, Codex, or GitHub Copilot in VS Code.
+- A local clone or fork of this repository, or its repository URL for a
+  source-plugin install.
 - An isolated runtime environment to run reviews in. See
   [Run CodeCheck in a sandbox](#run-codecheck-in-a-sandbox).
 - Authorisation to review the code. A review sends the code to your model
@@ -71,8 +73,8 @@ Before you run CodeCheck:
 
 ## Install the CodeCheck plugin
 
-This repository is also a plugin marketplace named `cba-codecheck`. Add your
-clone as a local marketplace, then install the `codecheck` plugin from it.
+This repository is an Agent Plugin and a plugin marketplace named
+`cba-codecheck`. Install it using the native mechanism for your coding agent.
 
 Claude Code:
 
@@ -88,17 +90,26 @@ codex plugin marketplace add /path/to/clone
 codex plugin add codecheck@cba-codecheck
 ```
 
+VS Code / GitHub Copilot:
+
+1. Enable `chat.plugins.enabled` in VS Code settings.
+2. Open the Command Palette and run **Chat: Install Plugin From Source**.
+3. Enter `https://github.com/Commonwealth-Bank-of-Australia/CodeCheck`.
+
+The VS Code install discovers the same skills used by the Claude Code and Codex
+plugins. It does not install a separate or rewritten review engine.
+
 ## Run a review
 
-1. Start a new Claude Code or Codex session in the repository you want to
-   review.
+1. Start a new coding-agent session in the repository you want to review.
 2. Ask for a review in plain language. For example:
    - "Run a security review of ./src"
    - "Scan ./api for SQL injection"
    - "Review the changes on this branch for vulnerabilities"
 
    To invoke the skill directly, run `/codecheck:codecheck ./src` in Claude Code
-   or `$codecheck ./src` in Codex.
+   or `$codecheck ./src` in Codex. In VS Code, ask Copilot Chat for a review in
+   agent mode, for example: `Run a CodeCheck security review of ./src`.
 
 3. Wait for the run to finish. A review starts many sub-agents, so it takes time
    and uses a large number of tokens. Both grow with the size of the source code
@@ -121,6 +132,27 @@ Your request sets the scope of the review:
   uses the threat model from its scope stage and says so in the report's
   limitations.
 
+## Multi-model review panels in GitHub Copilot
+
+GitHub Copilot can use multiple available frontier models for one CodeCheck run.
+This is especially useful in CodeCheck's adversarial review stage: independent
+reviewers receive the same candidate and source context, but may use different
+models to challenge the finding from different failure modes. Ask for a diverse
+panel explicitly:
+
+```text
+Run a CodeCheck review of ./src with a diverse two-model independent review panel.
+```
+
+When the client supports choosing a model per sub-agent, CodeCheck can assign
+different available models to independent hunters or reviewers while retaining
+the same prompts, evidence rules, CVSS metrics, and final report. Models are
+assigned for adversarial independence, not for voting: the orchestrator still
+weighs source evidence, shared assumptions, and concrete guards. A disagreement
+can trigger a narrowly focused follow-up review rather than a majority-rule
+decision. If several models are unavailable, CodeCheck uses the available models
+and records the reduced diversity under limitations.
+
 ## Output
 
 CodeCheck returns the findings report as its final answer inside the coding
@@ -139,8 +171,8 @@ for it in that or any other format, such as tickets or a table.
 The `codecheck` skill is an orchestrator. It never reads the reviewed code
 itself. It briefs sub-agents, judges their answers, decides each finding's
 outcome and writes the report. Each sub-agent is a general-purpose agent whose
-prompt is a Markdown file in `skills/codecheck/references/agents/`, so neither
-Claude Code nor Codex needs custom agents registered.
+prompt is a Markdown file in `skills/codecheck/references/agents/`, so no agent
+client needs custom role implementations or a copied review engine.
 
 A review runs in 4 stages:
 
@@ -161,7 +193,8 @@ A review runs in 4 stages:
 
 Every hunter and reviewer receives the rules in
 `skills/finding-authoring/SKILL.md` for testing, scoring and writing up a
-finding. These shared rules make findings from different sub-agents comparable.
+finding. These shared rules make findings from different sub-agents and model
+providers comparable.
 
 ### Why CodeCheck scopes first and uses specialist hunters
 
@@ -341,9 +374,10 @@ disclosure process described in [SECURITY.md](SECURITY.md) instead.
 | `.claude-plugin/`                     | The Claude Code plugin manifest and the `cba-codecheck` marketplace |
 | `.codex-plugin/`                      | The Codex plugin manifest                                           |
 | `.agents/plugins/`                    | The Codex `cba-codecheck` marketplace                               |
+| `plugin.json`                         | The VS Code / GitHub Copilot Agent Plugin manifest                  |
 
-Claude Code and Codex read the same skills. Only the plugin and marketplace
-manifests differ. Keep the 2 marketplace files in step.
+All clients read the same skills. Only the plugin and marketplace manifests
+differ. Keep the 2 marketplace files in step.
 
 ## Develop and test changes
 
